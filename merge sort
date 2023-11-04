@@ -1,0 +1,56 @@
+import random
+import time
+
+def quick_sort(y):
+    def partition(y, low, high):
+        pivot = y[high]
+        i = low - 1
+        for j in range(low, high):
+            if y[j] <= pivot:
+                i += 1
+                y[i], y[j] = y[j], y[i]
+        y[i + 1], y[high] = y[high], y[i + 1]
+        return i + 1
+
+    def quick_sort_helper(y, low, high):
+        if low < high:
+            pi = partition(y, low, high)
+            quick_sort_helper(y, low, pi - 1)
+            quick_sort_helper(y, pi + 1, high)
+
+    quick_sort_helper(y, 0, len(y) - 1)
+
+def avaliar_quick_sort(tamanho):
+    tempos = []
+    trocas = []
+    iteracoes = []
+
+    for _ in range(5):
+        vetor = [random.randint(1, 1000) for _ in range(tamanho)]
+
+        inicio = time.time()
+        quick_sort(vetor)
+        fim = time.time()
+
+        tempo_execucao = fim - inicio
+
+        num_trocas, num_iteracoes = partition(vetor, 0, len(vetor) - 1)
+
+        tempos.append(tempo_execucao)
+        trocas.append(num_trocas)
+        iteracoes.append(num_iteracoes)
+
+    media_tempo = sum(tempos) / 5
+    media_trocas = sum(trocas) / 5
+    media_iteracoes = sum(iteracoes) / 5
+
+    return media_tempo, media_trocas, media_iteracoes
+
+# Tamanhos de vetor a serem testados
+tamanhos = [50, 500, 1000, 5000, 10000]
+
+for tamanho in tamanhos:
+    print(f"Tamanho do vetor: {tamanho}")
+
+    quick_result = avaliar_quick_sort(tamanho)
+    print(f"Quick Sort: Tempo médio = {quick_result[0]}, Trocas médias = {quick_result[1]}, Iterações médias = {quick_result[2]}")
