@@ -4,12 +4,12 @@
 \usepackage{float}
 \usepackage{booktabs}
 \usepackage{geometry}
+\usepackage[utf8]{inputenc} % Declaração de codificação UTF-8
 
 \geometry{a4paper, left=25mm, right=25mm, top=20mm, bottom=20mm}
 
-\title{Relatório de Avaliação de Algoritmos de Ordenação}
-\author{Seu Nome}
-\date{\today}
+\title{Relatório de RA04}
+\author{Xuekai Qian}
 
 \begin{document}
 
@@ -24,6 +24,7 @@ Neste relatório, apresentaremos a avaliação dos algoritmos de ordenação (Bu
 Nossa metodologia envolveu a implementação dos três algoritmos e a avaliação de seu desempenho usando vetores de diferentes tamanhos preenchidos com números inteiros aleatórios. Foram realizadas 5 repetições para cada tamanho de vetor.
 
 \section{Resultados}
+{Link Github:https://github.com/XuekaiQian/RA04/tree/main}
 
 \subsection{Avaliação do Bubble Sort}
 
