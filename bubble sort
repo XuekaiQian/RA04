@@ -1,0 +1,48 @@
+import random
+import time
+
+def bubble_sort(x):
+    n = len(x)
+    trocas = 0
+    iteracoes = 0
+    for i in range(n):
+        for j in range(0, n-i-1):
+            iteracoes += 1
+            if x[j] > x[j+1]:
+                x[j], x[j+1] = x[j+1], x[j]
+                trocas += 1
+
+    return trocas, iteracoes
+
+def avaliar_bubble_sort(tamanho):
+    tempos = []
+    trocas = []
+    iteracoes = []
+
+    for _ in range(5):
+        vetor = [random.randint(1, 1000) for _ in range(tamanho)]
+
+        inicio = time.time()
+        num_trocas, num_iteracoes = bubble_sort(vetor)
+        fim = time.time()
+
+        tempo_execucao = fim - inicio
+
+        tempos.append(tempo_execucao)
+        trocas.append(num_trocas)
+        iteracoes.append(num_iteracoes)
+
+    media_tempo = sum(tempos) / 5
+    media_trocas = sum(trocas) / 5
+    media_iteracoes = sum(iteracoes) / 5
+
+    return media_tempo, media_trocas, media_iteracoes
+
+# Tamanhos de vetor a serem testados
+tamanhos = [50, 500, 1000, 5000, 10000]
+
+for tamanho in tamanhos:
+    print(f"Tamanho do vetor: {tamanho}")
+
+    bubble_result = avaliar_bubble_sort(tamanho)
+    print(f"Bubble Sort: Tempo médio = {bubble_result[0]}, Trocas médias = {bubble_result[1]}, Iterações médias = {bubble_result[2]}")
