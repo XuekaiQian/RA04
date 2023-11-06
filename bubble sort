@@ -18,7 +18,7 @@ public class BubbleSort {
         }
     }
 
-    public static double[] evaluateBubbleSort(int tamanho) {
+    public static double[] avaliaBubbleSort(int tamanho) {
         double[] results = new double[3];
 
         double[] tempos = new double[5];
@@ -41,16 +41,15 @@ public class BubbleSort {
 
             tempos[i] = tempoExecucao;
             trocas[i] = vetor.length; // trocas feitas
-            iteracoes[i] = vetor.length * (vetor.length - 1) / 2; // número de iterações
-
+            iteracoes[i] = vetor.length * (vetor.length - 1) / 2; 
             results[0] += tempoExecucao;
             results[1] += trocas[i];
             results[2] += iteracoes[i];
         }
 
-        results[0] /= 5.0; // Média de tempo
-        results[1] /= 5.0; // Média de trocas
-        results[2] /= 5.0; // Média de iterações
+        results[0] /= 5.0; 
+        results[1] /= 5.0; 
+        results[2] /= 5.0;
 
         return results;
     }
@@ -61,7 +60,7 @@ public class BubbleSort {
         for (int tamanho : tamanhos) {
             System.out.println("Tamanho do vetor: " + tamanho);
 
-            double[] bubbleResult = evaluateBubbleSort(tamanho);
+            double[] bubbleResult = avaliaBubbleSort(tamanho);
             System.out.println("Bubble Sort: Tempo médio = " + bubbleResult[0] + "s, Trocas médias = " + bubbleResult[1] + ", Iterações médias = " + bubbleResult[2]);
         }
     }
