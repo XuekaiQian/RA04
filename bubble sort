@@ -57,6 +57,9 @@ public class BubbleSort {
     public static void main(String[] args) {
         int[] tamanhos = {50, 500, 1000, 5000, 10000};
 
+        int numCores = Runtime.getRuntime().availableProcessors();
+        System.out.println("Número de núcleos da CPU: " + numCores);
+
         for (int tamanho : tamanhos) {
             System.out.println("Tamanho do vetor: " + tamanho);
 
