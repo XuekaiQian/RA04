@@ -1,9 +1,48 @@
-import java.util.Arrays;
 import java.util.Random;
 
 public class MergeSort {
     public static void mergeSort(int[] z) {
         // Implementa o algoritmo de ordenação Merge Sort
+        if (z.length > 1) {
+            int mid = z.length / 2;
+            int[] leftHalf = new int[mid];
+            int[] rightHalf = new int[z.length - mid];
+
+            for (int i = 0; i < mid; i++) {
+                leftHalf[i] = z[i];
+            }
+
+            for (int i = mid; i < z.length; i++) {
+                rightHalf[i - mid] = z[i];
+            }
+
+            mergeSort(leftHalf);
+            mergeSort(rightHalf);
+
+            int i = 0, j = 0, k = 0;
+            while (i < leftHalf.length && j < rightHalf.length) {
+                if (leftHalf[i] < rightHalf[j]) {
+                    z[k] = leftHalf[i];
+                    i++;
+                } else {
+                    z[k] = rightHalf[j];
+                    j++;
+                }
+                k++;
+            }
+
+            while (i < leftHalf.length) {
+                z[k] = leftHalf[i];
+                i++;
+                k++;
+            }
+
+            while (j < rightHalf.length) {
+                z[k] = rightHalf[j];
+                j++;
+                k++;
+            }
+        }
     }
 
     public static double[] avaliaMergeSort(int tamanho) {
@@ -28,8 +67,8 @@ public class MergeSort {
             double tempoExecucao = (fim - inicio) / 1000.0;
 
             tempos[i] = tempoExecucao;
-            trocas[i] = 0;
-            iteracoes[i] = vetor.length - 1;
+            trocas[i] = 0;  // Merge Sort não faz trocas diretamente
+            iteracoes[i] = vetor.length - 1;  // Número de iterações no Merge Sort
 
             results[0] += tempoExecucao;
             results[1] += trocas[i];
@@ -37,8 +76,9 @@ public class MergeSort {
         }
 
         results[0] /= 5.0;
-        results[1] = 0;
+        results[1] = 0;  // Não há trocas no Merge Sort
         results[2] /= 5.0;
+
         return results;
     }
 
