@@ -3,38 +3,7 @@ import java.util.Random;
 
 public class MergeSort {
     public static void mergeSort(int[] z) {
-        if (z.length > 1) {
-            int mid = z.length / 2;
-            int[] leftHalf = Arrays.copiaRange(z, 0, mid);
-            int[] rightHalf = Arrays.copiaRange(z, mid, z.length);
-
-            mergeSort(leftHalf);
-            mergeSort(rightHalf);
-
-            int i = 0, j = 0, k = 0;
-            while (i < leftHalf.length && j < rightHalf.length) {
-                if (leftHalf[i] < rightHalf[j]) {
-                    z[k] = leftHalf[i];
-                    i++;
-                } else {
-                    z[k] = rightHalf[j];
-                    j++;
-                }
-                k++;
-            }
-
-            while (i < leftHalf.length) {
-                z[k] = leftHalf[i];
-                i++;
-                k++;
-            }
-
-            while (j < rightHalf.length) {
-                z[k] = rightHalf[j];
-                j++;
-                k++;
-            }
-        }
+        // Implementa o algoritmo de ordenação Merge Sort
     }
 
     public static double[] avaliaMergeSort(int tamanho) {
@@ -60,21 +29,24 @@ public class MergeSort {
 
             tempos[i] = tempoExecucao;
             trocas[i] = 0;
-            iteracoes[i] = vetor.length - 1; 
+            iteracoes[i] = vetor.length - 1;
 
             results[0] += tempoExecucao;
             results[1] += trocas[i];
             results[2] += iteracoes[i];
         }
 
-        results[0] /= 5.0; 
-        results[1] = 0;    
-        results[2] /= 5.0; 
+        results[0] /= 5.0;
+        results[1] = 0;
+        results[2] /= 5.0;
         return results;
     }
 
     public static void main(String[] args) {
         int[] tamanhos = {50, 500, 1000, 5000, 10000};
+
+        int numCores = Runtime.getRuntime().availableProcessors();
+        System.out.println("Número de núcleos da CPU: " + numCores);
 
         for (int tamanho : tamanhos) {
             System.out.println("Tamanho do vetor: " + tamanho);
