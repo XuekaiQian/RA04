@@ -1,56 +1,81 @@
-import random
-import time
+import java.util.Random;
 
-def quick_sort(y):
-    def partition(y, low, high):
-        pivot = y[high]
-        i = low - 1
-        for j in range(low, high):
-            if y[j] <= pivot:
-                i += 1
-                y[i], y[j] = y[j], y[i]
-        y[i + 1], y[high] = y[high], y[i + 1]
-        return i + 1
+public class QuickSort {
+    public static void quickSort(int[] y) {
+        quickSortaju(y, 0, y.length - 1);
+    }
 
-    def quick_sort_helper(y, low, high):
-        if low < high:
-            pi = partition(y, low, high)
-            quick_sort_helper(y, low, pi - 1)
-            quick_sort_helper(y, pi + 1, high)
+    private static void quickSortaju(int[] y, int low, int high) {
+        if (low < high) {
+            int pi = particao(y, low, high);
+            quickSortaju(y, low, pi - 1);
+            quickSortaju(y, pi + 1, high);
+        }
+    }
 
-    quick_sort_helper(y, 0, len(y) - 1)
+    private static int particao(int[] y, int low, int high) {
+        int pivot = y[high];
+        int i = low - 1;
+        for (int j = low; j < high; j++) {
+            if (y[j] <= pivot) {
+                i++;
+                int temp = y[i];
+                y[i] = y[j];
+                y[j] = temp;
+            }
+        }
+        int temp = y[i + 1];
+        y[i + 1] = y[high];
+        y[high] = temp;
+        return i + 1;
+    }
 
-def avaliar_quick_sort(tamanho):
-    tempos = []
-    trocas = []
-    iteracoes = []
+    public static double[] avaliaQuickSort(int tamanho) {
+        double[] results = new double[3];
 
-    for _ in range(5):
-        vetor = [random.randint(1, 1000) for _ in range(tamanho)]
+        double[] tempos = new double[5];
+        int[] trocas = new int[5];
+        int[] iteracoes = new int[5];
 
-        inicio = time.time()
-        quick_sort(vetor)
-        fim = time.time()
+        for (int i = 0; i < 5; i++) {
+            int[] vetor = new int[tamanho];
+            Random random = new Random();
 
-        tempo_execucao = fim - inicio
+            for (int j = 0; j < tamanho; j++) {
+                vetor[j] = random.nextInt(1000) + 1;
+            }
 
-        num_trocas, num_iteracoes = partition(vetor, 0, len(vetor) - 1)
+            long inicio = System.currentTimeMillis();
+            quickSort(vetor);
+            long fim = System.currentTimeMillis();
 
-        tempos.append(tempo_execucao)
-        trocas.append(num_trocas)
-        iteracoes.append(num_iteracoes)
+            double tempoExecucao = (fim - inicio) / 1000.0;
+            int[] particaoResult = particao(vetor, 0, vetor.length - 1);
 
-    media_tempo = sum(tempos) / 5
-    media_trocas = sum(trocas) / 5
-    media_iteracoes = sum(iteracoes) / 5
+            tempos[i] = tempoExecucao;
+            trocas[i] = particaoResult[0];
+            iteracoes[i] = particaoResult[1];
 
-    return media_tempo, media_trocas, media_iteracoes
+            results[0] += tempoExecucao;
+            results[1] += trocas[i];
+            results[2] += iteracoes[i];
+        }
 
-# Tamanhos de vetor a serem testados
-tamanhos = [50, 500, 1000, 5000, 10000]
+        results[0] /= 5.0; 
+        results[1] /= 5.0; 
+        results[2] /= 5.0; 
 
-for tamanho in tamanhos:
-    print(f"Tamanho do vetor: {tamanho}")
+        return results;
+    }
 
-    quick_result = avaliar_quick_sort(tamanho)
-    print(f"Quick Sort: Tempo médio = {quick_result[0]}, Trocas médias = {quick_result[1]}, Iterações médias = {quick_result[2]}")
+    public static void main(String[] args) {
+        int[] tamanhos = {50, 500, 1000, 5000, 10000};
+
+        for (int tamanho : tamanhos) {
+            System.out.println("Tamanho do vetor: " + tamanho);
+
+            double[] quickResult = avaliaQuickSort(tamanho);
+            System.out.println("Quick Sort: Tempo médio = " + quickResult[0] + "s, Trocas médias = " + quickResult[1] + ", Iterações médias = " + quickResult[2]);
+        }
+    }
+}
