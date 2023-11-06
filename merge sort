@@ -1,66 +1,87 @@
-import random
-import time
+import java.util.Arrays;
+import java.util.Random;
 
-def merge_sort(z):
-    if len(z) > 1:
-        mid = len(z) // 2
-        left_half = z[:mid]
-        right_half = z[mid:]
+public class MergeSort {
+    public static void mergeSort(int[] z) {
+        if (z.length > 1) {
+            int mid = z.length / 2;
+            int[] leftHalf = Arrays.copyOfRange(z, 0, mid);
+            int[] rightHalf = Arrays.copyOfRange(z, mid, z.length);
 
-        merge_sort(left_half)
-        merge_sort(right_half)
+            mergeSort(leftHalf);
+            mergeSort(rightHalf);
 
-        i = j = k = 0
+            int i = 0, j = 0, k = 0;
+            while (i < leftHalf.length && j < rightHalf.length) {
+                if (leftHalf[i] < rightHalf[j]) {
+                    z[k] = leftHalf[i];
+                    i++;
+                } else {
+                    z[k] = rightHalf[j];
+                    j++;
+                }
+                k++;
+            }
 
-        while i < len(left_half) and j < len(right_half):
-            if left_half[i] < right_half[j]:
-                z[k] = left_half[i]
-                i += 1
-            else:
-                z[k] = right_half[j]
-                j += 1
-            k += 1
+            while (i < leftHalf.length) {
+                z[k] = leftHalf[i];
+                i++;
+                k++;
+            }
 
-        while i < len(left_half):
-            z[k] = left_half[i]
-            i += 1
-            k += 1
+            while (j < rightHalf.length) {
+                z[k] = rightHalf[j];
+                j++;
+                k++;
+            }
+        }
+    }
 
-        while j < len(right_half):
-            z[k] = right_half[j]
-            j += 1
-            k += 1
+    public static double[] evaluateMergeSort(int tamanho) {
+        double[] results = new double[3];
 
-def avaliar_merge_sort(tamanho):
-    tempos = []
-    trocas = []
-    iteracoes = []
+        double[] tempos = new double[5];
+        int[] trocas = new int[5];
+        int[] iteracoes = new int[5];
 
-    for _ in range(5):
-        vetor = [random.randint(1, 1000) for _ in range(tamanho)]
+        for (int i = 0; i < 5; i++) {
+            int[] vetor = new int[tamanho];
+            Random random = new Random();
 
-        inicio = time.time()
-        merge_sort(vetor)
-        fim = time.time()
+            for (int j = 0; j < tamanho; j++) {
+                vetor[j] = random.nextInt(1000) + 1;
+            }
 
-        tempo_execucao = fim - inicio
-        num_trocas = 0  # Merge Sort não faz trocas diretamente
-        num_iteracoes = len(vetor) - 1  # Número de iterações no Merge Sort
+            long inicio = System.currentTimeMillis();
+            mergeSort(vetor);
+            long fim = System.currentTimeMillis();
 
-        tempos.append(tempo_execucao)
-        trocas.append(num_trocas)
-        iteracoes.append(num_iteracoes)
+            double tempoExecucao = (fim - inicio) / 1000.0;
 
-    media_tempo = sum(tempos) / 5
-    media_iteracoes = sum(iteracoes) / 5
+            tempos[i] = tempoExecucao;
+            trocas[i] = 0; // Merge Sort doesn't perform swaps directly
+            iteracoes[i] = vetor.length - 1; // Number of iterations in Merge Sort
 
-    return media_tempo, 0, media_iteracoes
+            results[0] += tempoExecucao;
+            results[1] += trocas[i];
+            results[2] += iteracoes[i];
+        }
 
-# Tamanhos de vetor a serem testados
-tamanhos = [50, 500, 1000, 5000, 10000]
+        results[0] /= 5.0; // Average time
+        results[1] = 0;    // No swaps in Merge Sort
+        results[2] /= 5.0; // Average iterations
 
-for tamanho in tamanhos:
-    print(f"Tamanho do vetor: {tamanho}")
+        return results;
+    }
 
-    merge_result = avaliar_merge_sort(tamanho)
-    print(f"Merge Sort: Tempo médio = {merge_result[0]}, Trocas médias = {merge_result[1]}, Iterações médias = {merge_result[2]}")
+    public static void main(String[] args) {
+        int[] tamanhos = {50, 500, 1000, 5000, 10000};
+
+        for (int tamanho : tamanhos) {
+            System.out.println("Tamanho do vetor: " + tamanho);
+
+            double[] mergeResult = evaluateMergeSort(tamanho);
+            System.out.println("Merge Sort: Tempo médio = " + mergeResult[0] + "s, Trocas médias = " + mergeResult[1] + ", Iterações médias = " + mergeResult[2]);
+        }
+    }
+}
