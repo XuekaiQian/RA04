@@ -16,17 +16,20 @@ public class QuickSort {
     private static int particao(int[] y, int low, int high) {
         int pivot = y[high];
         int i = low - 1;
+        int trocas = 0;  
         for (int j = low; j < high; j++) {
             if (y[j] <= pivot) {
                 i++;
                 int temp = y[i];
                 y[i] = y[j];
                 y[j] = temp;
+                trocas++;  
             }
         }
         int temp = y[i + 1];
         y[i + 1] = y[high];
         y[high] = temp;
+        trocas++;  
         return i + 1;
     }
 
@@ -50,26 +53,30 @@ public class QuickSort {
             long fim = System.currentTimeMillis();
 
             double tempoExecucao = (fim - inicio) / 1000.0;
-            int[] particaoResult = particao(vetor, 0, vetor.length - 1);
+            int numTrocas = particao(vetor, 0, vetor.length - 1)[0];
+            int numIteracoes = vetor.length - 1;
 
             tempos[i] = tempoExecucao;
-            trocas[i] = particaoResult[0];
-            iteracoes[i] = particaoResult[1];
+            trocas[i] = numTrocas;
+            iteracoes[i] = numIteracoes;
 
             results[0] += tempoExecucao;
             results[1] += trocas[i];
             results[2] += iteracoes[i];
         }
 
-        results[0] /= 5.0; 
-        results[1] /= 5.0; 
-        results[2] /= 5.0; 
+        results[0] /= 5.0;
+        results[1] /= 5.0;
+        results[2] /= 5.0;
 
         return results;
     }
 
     public static void main(String[] args) {
         int[] tamanhos = {50, 500, 1000, 5000, 10000};
+
+        int numCores = Runtime.getRuntime().availableProcessors();
+        System.out.println("Número de núcleos da CPU: " + numCores);
 
         for (int tamanho : tamanhos) {
             System.out.println("Tamanho do vetor: " + tamanho);
