@@ -1,48 +1,68 @@
-import random
-import time
+import java.util.Random;
 
-def bubble_sort(x):
-    n = len(x)
-    trocas = 0
-    iteracoes = 0
-    for i in range(n):
-        for j in range(0, n-i-1):
-            iteracoes += 1
-            if x[j] > x[j+1]:
-                x[j], x[j+1] = x[j+1], x[j]
-                trocas += 1
+public class BubbleSort {
+    public static void bubbleSort(int[] x) {
+        int n = x.length;
+        int trocas = 0;
+        int iteracoes = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                iteracoes++;
+                if (x[j] > x[j + 1]) {
+                    int temp = x[j];
+                    x[j] = x[j + 1];
+                    x[j + 1] = temp;
+                    trocas++;
+                }
+            }
+        }
+    }
 
-    return trocas, iteracoes
+    public static double[] evaluateBubbleSort(int tamanho) {
+        double[] results = new double[3];
 
-def avaliar_bubble_sort(tamanho):
-    tempos = []
-    trocas = []
-    iteracoes = []
+        double[] tempos = new double[5];
+        int[] trocas = new int[5];
+        int[] iteracoes = new int[5];
 
-    for _ in range(5):
-        vetor = [random.randint(1, 1000) for _ in range(tamanho)]
+        for (int i = 0; i < 5; i++) {
+            int[] vetor = new int[tamanho];
+            Random random = new Random();
 
-        inicio = time.time()
-        num_trocas, num_iteracoes = bubble_sort(vetor)
-        fim = time.time()
+            for (int j = 0; j < tamanho; j++) {
+                vetor[j] = random.nextInt(1000) + 1;
+            }
 
-        tempo_execucao = fim - inicio
+            long inicio = System.currentTimeMillis();
+            bubbleSort(vetor);
+            long fim = System.currentTimeMillis();
 
-        tempos.append(tempo_execucao)
-        trocas.append(num_trocas)
-        iteracoes.append(num_iteracoes)
+            double tempoExecucao = (fim - inicio) / 1000.0;
 
-    media_tempo = sum(tempos) / 5
-    media_trocas = sum(trocas) / 5
-    media_iteracoes = sum(iteracoes) / 5
+            tempos[i] = tempoExecucao;
+            trocas[i] = vetor.length; // trocas feitas
+            iteracoes[i] = vetor.length * (vetor.length - 1) / 2; // número de iterações
 
-    return media_tempo, media_trocas, media_iteracoes
+            results[0] += tempoExecucao;
+            results[1] += trocas[i];
+            results[2] += iteracoes[i];
+        }
 
-# Tamanhos de vetor a serem testados
-tamanhos = [50, 500, 1000, 5000, 10000]
+        results[0] /= 5.0; // Média de tempo
+        results[1] /= 5.0; // Média de trocas
+        results[2] /= 5.0; // Média de iterações
 
-for tamanho in tamanhos:
-    print(f"Tamanho do vetor: {tamanho}")
+        return results;
+    }
 
-    bubble_result = avaliar_bubble_sort(tamanho)
-    print(f"Bubble Sort: Tempo médio = {bubble_result[0]}, Trocas médias = {bubble_result[1]}, Iterações médias = {bubble_result[2]}")
+    public static void main(String[] args) {
+        int[] tamanhos = {50, 500, 1000, 5000, 10000};
+
+        for (int tamanho : tamanhos) {
+            System.out.println("Tamanho do vetor: " + tamanho);
+
+            double[] bubbleResult = evaluateBubbleSort(tamanho);
+            System.out.println("Bubble Sort: Tempo médio = " + bubbleResult[0] + "s, Trocas médias = " + bubbleResult[1] + ", Iterações médias = " + bubbleResult[2]);
+        }
+    }
+}
